@@ -22,8 +22,14 @@
                                     {{ feek.body }}
                                     <br>
                                     <small class="text-muted">
-                                        {{feek.created_at}} by
+                                        {{feek.created_at}} By
                                         @{{feek.user.username}}
+                                        - {{feek.number_of_likes}} Likes - 
+                                        {% if user in feek.likes.all %}
+                                            <a href="{% url "feek_like"  feek.id%}">UnLike</a>
+                                        {% else %}
+                                            <a href="{% url "feek_like"  feek.id%}">Like</a>
+                                        {% endif %}
                                     </small>
                                 </div>
                                 </div>
@@ -38,7 +44,7 @@
                 {% if form %}
                     <form method='POST'>
                         {% csrf_token %}
-                        {{ form.as_p    }}
+                        {{ form.as_p }}
                         <button type="submit" class="btn btn-primary">Post Feek!</button>
                     </form>
                 {% endif %}

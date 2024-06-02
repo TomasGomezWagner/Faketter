@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http.request import HttpRequest
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import (
     FeekForm,
@@ -162,3 +162,19 @@ def update_user(request: HttpRequest):
 
 
 # --------------------------------------------------------------------------------
+
+
+def feek_like(request: HttpRequest, pk: int):
+    if request.user.is_authenticated:
+        meep = get_object_or_404(Feek, id=pk)
+        if meep.likes.filter(id=request.user.id):
+            meep.likes.remove(request.user)
+        else:
+            meep.likes.add(request.user)
+
+        # HTTP_REFERER hace referencia a la ruta actual
+        return redirect(request.META.get("HTTP_REFERER"))
+
+    else:
+        messages.success(request, "You must be logged in to view that page.")
+        return redirect("home")
