@@ -178,3 +178,12 @@ def feek_like(request: HttpRequest, pk: int):
     else:
         messages.success(request, "You must be logged in to view that page.")
         return redirect("home")
+
+
+def feek_show(request: HttpRequest, pk: int):
+    feek = get_object_or_404(Feek, id=pk)
+    if feek:
+        return render(request, "feek_show.html", {"feek": feek})
+    else:
+        messages.success(request, "that feek does not exist any more.")
+        redirect("home")

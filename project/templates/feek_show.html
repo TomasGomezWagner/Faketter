@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="containter text-center">
+        <div class="row">
+            <div class="col-8">
+                <div class="alert alert-dark" role="alert">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2">
+                                {% if feek.user.profile.profile_image %}
+                                    <img src="{{feek.user.profile.profile_image.url}}" class='rounded-circle' width=50 height=50 alt="{{feek.user.username}}">
+                                {% else %}
+                                    <img src="{% static '/img/asd.png' %}" class='rounded-circle' width=50 height=50 alt="{{profile.user.username}}">
+                                {% endif %}
+                            </div>
+                            <div class="col-10">
+                                {{ feek.body }}
+                                <br>
+                                <small class="text-muted">
+                                    {{feek.created_at}} By @{{feek.user.username}} - {{feek.number_of_likes}} Likes
+                                    {% if user in feek.likes.all %}
+                                        <a href="{% url "feek_like"  feek.id%}"><i class= 'fa-solid fa-heart' style='color:red'></i></a>
+                                    {% else %}
+                                        <a href="{% url "feek_like"  feek.id%}"><i class= 'fa fa-heart-o' style='color:red'></i></a>
+                                    {% endif %}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+                {% if form %}
+                    <form method='POST'>
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Post Feek!</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

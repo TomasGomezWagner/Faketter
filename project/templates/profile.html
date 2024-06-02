@@ -26,17 +26,14 @@
                                         {{ feek.body }}
                                         <br>
                                         <small class="text-muted">
-                                            {{feek.created_at}} by @{{feek.user.username}}
-                                            - {{feek.number_of_likes}} Likes -
+                                            {{feek.created_at}} by @{{feek.user.username}}&nbsp;&nbsp;{{feek.number_of_likes}}
                                             {% if user in feek.likes.all %}
-                                                <a href="{% url "feek_like"  feek.id%}">
-                                                    <i class= 'fa-solid fa-heart' style='color:red'></i>
-                                                </a>
+                                                <a href="{% url "feek_like"  feek.id%}"><i class= 'fa-solid fa-heart' style='color:red'></i></a>
                                             {% else %}
-                                                <a href="{% url "feek_like"  feek.id%}">
-                                                    <i class= 'fa fa-heart-o' style='color:red'></i>
-                                                </a>
+                                                <a href="{% url "feek_like"  feek.id%}"><i class= 'fa fa-heart-o' style='color:red'></i></a>
                                             {% endif %}
+                                            &nbsp;
+                                            <a href="{% url "feek_show"  feek.id%}"><i class= 'fa fa-share' style='color:grey'></i></a>
                                         </small>
                                     </div>
                                 </div>
