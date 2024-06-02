@@ -49,7 +49,33 @@
                 {% if profile.profile_image %}
                     <img src="{{ profile.profile_image.url }}" class='rounded-circle' width=200 height=200>
                 {% endif %}
+
+                <!-- mostrar los links si tiene  -->
                 <br><br>
+                {% if profile.personal_link %}
+                    <a href="{{ profile.personal_link }}" target='new'><i class="fa-solid fa-link fa-lg" style='color:grey'></i></a>
+                {% endif %}
+                &nbsp;
+                {% if profile.facebook_link %}
+                    <a href="{{ profile.facebook_link }}" target='new'><i class="fa-brands fa-facebook-f fa-lg" style='color:grey'></i></a>
+                {% endif %}
+                &nbsp;
+                {% if profile.instagram_link %}
+                    <a href="{{ profile.instagram_link }}" target='new'><i class="fa-brands fa-instagram fa-lg" style='color:grey'></i></a>
+                {% endif %}
+                &nbsp;
+                {% if profile.linkedin_link %}
+                    <a href="{{ profile.linkedin_link }}" target='new'><i class="fa-brands fa-linkedin fa-lg" style='color:grey'></i></a>
+                {% endif %}
+                
+                <br><br>
+                {% if profile.profile_bio %}
+                    <p align='justify'>
+                        {{ profile.profile_bio }}
+                    </p>
+                {% endif %}
+
+                <br>
                 <div class="card">
                     <div class="card-header">
                         <strong>Follows</strong>

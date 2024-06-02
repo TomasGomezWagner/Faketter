@@ -112,10 +112,30 @@ class UpdateUserForm(forms.ModelForm):
 
 class ProfilePicForm(forms.ModelForm):
     profile_image = forms.ImageField(label="Profile Picture")
+    profile_bio = forms.CharField(
+        required=False,
+        label="Profile Bio",
+        widget=forms.Textarea(
+            attrs={"placeholder": "Profile Bio...", "class": "form-control"}
+        ),
+    )
+    personal_link = forms.CharField(
+        required=False, widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    facebook_link = forms.CharField(
+        required=False, widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    instagram_link = forms.CharField(
+        required=False, widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    linkedin_link = forms.CharField(
+        required=False, widget=forms.TextInput(attrs={"class": "form-control"})
+    )
 
     class Meta:
         model = Profile
-        fields = ("profile_image",)
+        fields = "__all__"
+        exclude = ("user", "follows")
 
 
 class UserConfirmationForm(forms.ModelForm):
