@@ -24,11 +24,15 @@
                                     <small class="text-muted">
                                         {{feek.created_at}} By
                                         @{{feek.user.username}}
-                                        - {{feek.number_of_likes}} Likes - 
+                                        - {{feek.number_of_likes}} Likes
                                         {% if user in feek.likes.all %}
-                                            <a href="{% url "feek_like"  feek.id%}">UnLike</a>
+                                            <a href="{% url "feek_like"  feek.id%}">
+                                                <i class= 'fa-solid fa-heart' style='color:red'></i>
+                                            </a>
                                         {% else %}
-                                            <a href="{% url "feek_like"  feek.id%}">Like</a>
+                                            <a href="{% url "feek_like"  feek.id%}">
+                                                <i class= 'fa fa-heart-o' style='color:red'></i>
+                                            </a>
                                         {% endif %}
                                     </small>
                                 </div>
