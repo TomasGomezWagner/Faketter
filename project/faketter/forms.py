@@ -18,7 +18,7 @@ class FeekForm(forms.ModelForm):
 
     class Meta:
         model = Feek
-        exclude = ("user",)
+        exclude = ("user", "likes")
 
 
 class RegisterUserForm(UserCreationForm):
