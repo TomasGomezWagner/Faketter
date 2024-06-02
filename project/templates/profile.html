@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if profile %}
+    <div class="containter text-center">
+        <div class="row">
+            
+            <div class="col-8">
+                <h1> {{profile.user.username}}'s Profile</h1>
+                <br>
+                {% if feeks %}
+                    {% for feek in feeks %}
+                        <div class="alert alert-dark" role="alert">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-1">
+                                        {% if profile.profile_image %}
+                                            <img src="{{ profile.profile_image.url}}" class='rounded-circle' width=50 height=50 alt="{{profile.user.username}}">
+                                        {% else %}
+                                            <img src="{% static '/img/asd.png' %}" class='rounded-circle' width=50 height=50 alt="{{profile.user.username}}">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-11">
+                                        {{ feek.body }}
+                                        <br>
+                                        <small class="text-muted">
+                                            {{feek.created_at}} by @{{feek.user.username}}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <br><br>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            
+            <div class="col-4">
+                {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" class='rounded-circle' width=200 height=200>
+                {% endif %}
+                <br><br>
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Follows</strong>
+                    </div>
+                    <div class="card-body">
+                        {% for following in profile.follows.all %}
+                        <a href="{% url "profile" following.user.id %}">@{{ following }}</a>
+                        <br>
+                        {% endfor %}
+                    </div>
+                  </div>
+                <br>
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Followed by</strong>
+                    </div>
+                    <div class="card-body">
+                        {% for following in profile.follow_by.all %}
+                        <a href="{% url "profile" following.user.id %}">@{{ following }}</a>
+                        <br>
+                        {% endfor %}
+                    </div>
+                </div>
+            <br>
+
+            <form method=POST>
+                {% csrf_token %}
+
+                {% if profile in user.profile.follows.all %}
+
+                    <button class="btn btn-outline-danger" name='follow' value='unfollow' type='submit'>
+                        Unfollow @{{ profile.user.username }}
+                    </button> 
+
+                {% else %}
+                
+                <button class="btn btn-outline-success" name='follow' value='follow' type='submit'>
+                    Follow @{{ profile.user.username }}
+                </button> 
+                {% endif %}
+            </form>
+            <br>
+            <!--Check for correct user to update-->
+            {% if request.user.id == profile.user.id %}
+                <a href="{% url "update_user" %}" class= 'btn btn-outline-secondary'>Update profile</a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    
+   
+{% endif %}
+
+{% endblock content %}
