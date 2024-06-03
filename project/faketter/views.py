@@ -57,7 +57,7 @@ def profile(request: HttpRequest, pk: int):
                 current_user_profile.follows.add(profile)
 
             current_user_profile.save()
-
+        print(profile.follows.all())
         return render(request, "profile.html", {"profile": profile, "feeks": feeks})
 
     messages.success(request, "Tenes que estar logueado para ver esta pagina.")
@@ -193,12 +193,28 @@ def unfollow(request: HttpRequest, pk: int):
     if request.user.is_authenticated:
         # get profile to unfollow
         profile = Profile.objects.get(id=pk)
-        # unfollow the user
+        # unfollow the profile
         request.user.profile.follows.remove(profile)
         # save our profile
         request.user.profile.save()
         messages.success(
             request, f"You have successfully unfollowed {profile.user.username}"
+        )
+        return redirect(request.META.get("HTTP_REFERER"))
+    else:
+        messages.success(request, "You must be logged in to view that page.")
+        return redirect("home")
+
+
+def follow(request: HttpRequest, pk: int):
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(id=pk)
+        # follow the profile
+        request.user.profile.follows.add(profile)
+        # save our profile
+        request.user.profile.save()
+        messages.success(
+            request, f"You have successfully followed {profile.user.username}"
         )
         return redirect(request.META.get("HTTP_REFERER"))
     else:

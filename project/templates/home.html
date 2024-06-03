@@ -15,7 +15,7 @@
                                     {% if feek.user.profile.profile_image %}
                                         <img src="{{feek.user.profile.profile_image.url}}" class='rounded-circle' width=50 height=50 alt="{{feek.user.username}}">
                                     {% else %}
-                                        <img src="{% static '/img/asd.png' %}" class='rounded-circle' width=50 height=50 alt="{{profile.user.username}}">
+                                        <img src="{% static '/img/profile_default.png' %}" class='rounded-circle' width=50 height=50 alt="{{profile.user.username}}">
                                     {% endif %}
                                 </div>
                                 <div class="col-10">
