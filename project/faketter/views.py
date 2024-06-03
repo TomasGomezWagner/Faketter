@@ -246,3 +246,21 @@ def follow(request: HttpRequest, pk: int):
     else:
         messages.success(request, "You must be logged in to view that page.")
         return redirect("home")
+
+
+# -------------------------------------------------------------------------------
+
+
+def delete_feek(request: HttpRequest, pk: int):
+    if request.user.is_authenticated:
+        feek = get_object_or_404(Feek, id=pk)
+        if request.user.username == feek.user.username:
+            feek.delete()
+            messages.success(request, "El post fue eliminado!")
+            return redirect(request.META.get("HTTP_REFERER"))
+        else:
+            messages.success(request, "no es tu post")
+            return redirect("home")
+    else:
+        messages.success(request, "You must be logged in to view that page.")
+        return redirect("home")
