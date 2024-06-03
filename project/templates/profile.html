@@ -87,9 +87,8 @@
 
                             {% if profile.id != following.user.id %}
 
-                                <a href="{% url "profile" following.user.id %}">
-                                    <img src="{{ following.user.profile.profile_image.url}}" class='rounded-circle' width=30>&nbsp;@{{ following }}
-                                </a>&nbsp;
+                                <a href="{% url "profile" following.user.id %}"><img src="{{ following.user.profile.profile_image.url}}" class='rounded-circle' width=30>&nbsp;@{{ following }}</a>&nbsp;
+                                
                                 {% if profile.id == request.user.id %}
                                     
                                     <a href={% url "unfollow" following.user.id %}><i class="fa-solid fa-trash" style='color:grey;'></i></a>
@@ -102,6 +101,9 @@
 
                         {% endfor %}
                     </div>
+                    <div class="card-footer text-muted text-end">
+                        <a href="{% url "following" request.user.id %}" class="btn btn-sm btn-outline-secondary" >See All...</a>
+                    </div>
                   </div>
                 <br>
                 <div class="card">
@@ -109,11 +111,11 @@
                         <strong>Followed by</strong>
                     </div>
                     <div class="card-body">
-                        {% for following in profile.follow_by.all %}
+                        {% for following in profile.follow_by.all|slice:3 %}
 
                             {% if profile.id != following.user.id %}
 
-                                <a href="{% url "profile" following.user.id %}"><img src="{{ following.user.profile.profile_image.url}}" class='rounded-circle' width=30>&nbsp;@{{ following }}
+                                <a href="{% url "profile" following.user.id %}"><img src="{{ following.user.profile.profile_image.url}}" class='rounded-circle' width=30>&nbsp;@{{ following }}</a>
                                     
                                     {% if request.user.id == profile.user.id %}
 
@@ -134,6 +136,9 @@
                             {% endif %}
 
                         {% endfor %}
+                    </div>
+                    <div class="card-footer text-muted text-end">
+                        <a href="{% url "followers" request.user.id %}" class="btn btn-sm btn-outline-secondary" >See All...</a>
                     </div>
                 </div>
             <br>

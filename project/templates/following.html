@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>{{ request.user.username|capfirst}}is following</h1>
+
+{% if profile_user %}
+    {% for profile in profile_user.follows.all %}
+        {% if profile.user.id != request.user.id %}
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        {% if profile.profile_image %}
+                        <img src="{{ profile.profile_image.url}}" width=200 height=200 class='img-fluid rounded-start' alt={{profile.user.username}}>
+                        {% else %}
+                        <img src="{% static '/img/profile_default.png' %} " class="img-fluid rounded-start" alt="Profile Image">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ profile.user.username }}
+                                {% if profile in profile_user.follows.all %}
+                                    <a href={% url "unfollow" profile.user.id %}><i class="fa-solid fa-trash" style='color:grey;'></i></a>
+                                    <br>
+
+                                {% else %}
+
+                                    <a href={% url "follow" profile.user.id %}><i class="fa-solid fa-user-plus" style='color:grey;'></i></a>
+                                    <br>
+                                {% endif %}
+                            </h5>
+                            <a href="{% url "profile" profile.user.id %}">
+                            <p class="card-text">@{{ profile.user.username|lower}}</p>
+                            </a>
+                            <br><br>
+                            <p class="card-text"><small class="text-body-secondary">Last Udated: {{ profile.date_modified }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% endblock content %}

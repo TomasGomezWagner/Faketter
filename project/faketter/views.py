@@ -42,6 +42,32 @@ def profile_list(request: HttpRequest):
     return redirect("home")
 
 
+def followers(request: HttpRequest, pk: int):
+    if request.user.is_authenticated:
+        if request.user.id == pk:
+            profile = Profile.objects.get(user_id=pk)
+            return render(request, "followers.html", {"profile_user": profile})
+        else:
+            messages.success(request, "Esa no es tu pagina de seguidores")
+            return redirect("home")
+
+    messages.success(request, "Tenes que estar logueado para ver esta pagina.")
+    return redirect("home")
+
+
+def following(request: HttpRequest, pk: int):
+    if request.user.is_authenticated:
+        if request.user.id == pk:
+            profile = Profile.objects.get(user_id=pk)
+            return render(request, "following.html", {"profile_user": profile})
+        else:
+            messages.success(request, "Esa no es tu pagina de seguidores")
+            return redirect("home")
+
+    messages.success(request, "Tenes que estar logueado para ver esta pagina.")
+    return redirect("home")
+
+
 def profile(request: HttpRequest, pk: int):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user_id=pk)
@@ -57,7 +83,7 @@ def profile(request: HttpRequest, pk: int):
                 current_user_profile.follows.add(profile)
 
             current_user_profile.save()
-        print(profile.follows.all())
+
         return render(request, "profile.html", {"profile": profile, "feeks": feeks})
 
     messages.success(request, "Tenes que estar logueado para ver esta pagina.")
