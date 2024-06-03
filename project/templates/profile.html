@@ -82,8 +82,15 @@
                     </div>
                     <div class="card-body">
                         {% for following in profile.follows.all %}
-                        <a href="{% url "profile" following.user.id %}">@{{ following }}</a>
-                        <br>
+                            {% if profile.id != following.user.id %}
+                                <a href="{% url "profile" following.user.id %}">
+                                    <img src="{{ following.user.profile.profile_image.url}}" class='rounded-circle' width=30>&nbsp;@{{ following }}
+                                </a>&nbsp;
+                                {% if profile.id == request.user.id %}
+                                    <a href={% url "unfollow" following.user.id %}><i class="fa-solid fa-trash" style='color:grey;'></i></a>
+                                {% endif %}
+                                <br>
+                            {% endif %}
                         {% endfor %}
                     </div>
                   </div>
@@ -94,8 +101,11 @@
                     </div>
                     <div class="card-body">
                         {% for following in profile.follow_by.all %}
-                        <a href="{% url "profile" following.user.id %}">@{{ following }}</a>
-                        <br>
+                            {% if profile.id != following.user.id %}
+                                <a href="{% url "profile" following.user.id %}">
+                                    <img src="{{ following.user.profile.profile_image.url}}" class='rounded-circle' width=30>&nbsp;@{{ following }}
+                                <br>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -103,19 +113,25 @@
 
             <form method=POST>
                 {% csrf_token %}
-
-                {% if profile in user.profile.follows.all %}
-
-                    <button class="btn btn-outline-danger" name='follow' value='unfollow' type='submit'>
-                        Unfollow @{{ profile.user.username }}
-                    </button> 
-
-                {% else %}
                 
-                <button class="btn btn-outline-success" name='follow' value='follow' type='submit'>
-                    Follow @{{ profile.user.username }}
-                </button> 
+                {% if user.profile != profile %}
+
+                    {% if profile in user.profile.follows.all %}
+
+                        <button class="btn btn-outline-danger" name='follow' value='unfollow' type='submit'>
+                            Unfollow @{{ profile.user.username }}
+                        </button> 
+
+                    {% else %}
+                    
+                        <button class="btn btn-outline-success" name='follow' value='follow' type='submit'>
+                            Follow @{{ profile.user.username }}
+                        </button> 
+
+                    {% endif %}
+
                 {% endif %}
+                
             </form>
             <br>
             <!--Check for correct user to update-->

@@ -186,4 +186,21 @@ def feek_show(request: HttpRequest, pk: int):
         return render(request, "feek_show.html", {"feek": feek})
     else:
         messages.success(request, "that feek does not exist any more.")
-        redirect("home")
+        return redirect("home")
+
+
+def unfollow(request: HttpRequest, pk: int):
+    if request.user.is_authenticated:
+        # get profile to unfollow
+        profile = Profile.objects.get(id=pk)
+        # unfollow the user
+        request.user.profile.follows.remove(profile)
+        # save our profile
+        request.user.profile.save()
+        messages.success(
+            request, f"You have successfully unfollowed {profile.user.username}"
+        )
+        return redirect(request.META.get("HTTP_REFERER"))
+    else:
+        messages.success(request, "You must be logged in to view that page.")
+        return redirect("home")
