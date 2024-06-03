@@ -83,7 +83,7 @@
                         <strong>Follows</strong>
                     </div>
                     <div class="card-body">
-                        {% for following in profile.follows.all %}
+                        {% for following in profile.follows.all|slice:3 %}
 
                             {% if profile.id != following.user.id %}
 
