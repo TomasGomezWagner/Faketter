@@ -267,7 +267,7 @@ def delete_feek(request: HttpRequest, pk: int):
         return redirect("home")
 
 
-# @login_required()
+@login_required("", login_url="login")
 def edit_feek(request: HttpRequest, pk: int):
     feek = get_object_or_404(Feek, id=pk)
     if request.user.username == feek.user.username:
