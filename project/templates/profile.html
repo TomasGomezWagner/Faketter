@@ -38,6 +38,8 @@
                                             &nbsp;
                                             {% if request.user.username == profile.user.username %}
                                                 <a href="{% url "delete_feek"  feek.id%}"><i class="fa-solid fa-trash" style='color:grey;'></i></a>
+                                                &nbsp;
+                                                <a href="{% url "edit_feek" feek.id %}"><i class="fa-solid fa-pen-to-square" style='color:grey;'></i></a>                                                
                                             {% endif %}
                                         </small>
                                     </div>

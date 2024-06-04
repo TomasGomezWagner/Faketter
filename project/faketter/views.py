@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http.request import HttpRequest
 from django.shortcuts import get_object_or_404, redirect, render
@@ -263,4 +264,23 @@ def delete_feek(request: HttpRequest, pk: int):
             return redirect("home")
     else:
         messages.success(request, "You must be logged in to view that page.")
+        return redirect("home")
+
+
+# @login_required()
+def edit_feek(request: HttpRequest, pk: int):
+    feek = get_object_or_404(Feek, id=pk)
+    if request.user.username == feek.user.username:
+        form = FeekForm(request.POST or None, instance=feek)
+        if request.method == "POST":
+            if form.is_valid():
+                feek = form.save(commit=False)
+                feek.user = request.user
+                feek.save()
+                messages.success(request, "Your feek was updated!")
+                return redirect("profile", request.user.id)
+        else:
+            return render(request, "edit_feek.html", {"feek": feek, "form": form})
+    else:
+        messages.success(request, "no es tu post")
         return redirect("home")
