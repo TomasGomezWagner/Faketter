@@ -284,3 +284,14 @@ def edit_feek(request: HttpRequest, pk: int):
     else:
         messages.success(request, "no es tu post")
         return redirect("home")
+
+
+def search_feek(request: HttpRequest):
+    if request.method == "POST":
+        searched = request.POST["feek_search"]
+        feeks = Feek.objects.filter(body__contains=searched)
+        return render(
+            request, "search_feek.html", {"searched": searched, "feeks": feeks}
+        )
+    else:
+        return render(request, "search_feek.html", {})
